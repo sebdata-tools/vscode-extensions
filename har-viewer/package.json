@@ -1,0 +1,101 @@
+{
+  "name": "har-file-viewer",
+  "displayName": "HAR File Viewer",
+  "description": "Open .har files as a request table: filter, sort, and read headers, query, timings and bodies. Read-only and offline.",
+  "version": "1.0.0",
+  "publisher": "sebdata",
+  "license": "MIT",
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "har",
+    "har viewer",
+    "http archive",
+    "network",
+    "requests"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sebdata-tools/vscode-extensions.git",
+    "directory": "har-viewer"
+  },
+  "bugs": {
+    "url": "https://github.com/sebdata-tools/vscode-extensions/issues"
+  },
+  "homepage": "https://github.com/sebdata-tools/vscode-extensions/tree/main/har-viewer#readme",
+  "main": "./extension.js",
+  "activationEvents": [],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": true
+  },
+  "contributes": {
+    "customEditors": [
+      {
+        "viewType": "sebdata.harFileViewer",
+        "displayName": "HAR File Viewer",
+        "selector": [
+          {
+            "filenamePattern": "*.har"
+          }
+        ],
+        "priority": "default"
+      }
+    ],
+    "commands": [
+      {
+        "command": "harFileViewer.open",
+        "title": "Open in HAR File Viewer",
+        "category": "HAR"
+      },
+      {
+        "command": "harFileViewer.openAsText",
+        "title": "Open as JSON Text",
+        "category": "HAR"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "harFileViewer.open",
+          "when": "resourceExtname == .har",
+          "group": "navigation@90"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "harFileViewer.open",
+          "when": "resourceExtname == .har && activeEditor == workbench.editors.files.textFileEditor",
+          "group": "navigation"
+        },
+        {
+          "command": "harFileViewer.openAsText",
+          "when": "activeCustomEditorId == sebdata.harFileViewer",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "harFileViewer.open",
+          "when": "resourceExtname == .har"
+        },
+        {
+          "command": "harFileViewer.openAsText",
+          "when": "activeCustomEditorId == sebdata.harFileViewer"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "test": "node --test test/har.test.js",
+    "package": "npx --yes @vscode/vsce@latest package"
+  }
+}

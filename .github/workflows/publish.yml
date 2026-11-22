@@ -1,0 +1,30 @@
+name: Publish HAR File Viewer
+
+# Publishes har-viewer/ to the Visual Studio Marketplace through Trusted Publishing
+# (GitHub OIDC, no stored token). Runs when the extension's package.json changes
+# (a version bump) or by hand. A version that is already published is skipped.
+on:
+  push:
+    branches: [main]
+    paths:
+      - har-viewer/package.json
+  workflow_dispatch:
+
+concurrency: publish-har-viewer
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        working-directory: har-viewer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+      - run: npx --yes @vscode/vsce@latest publish --oidc --skip-duplicate
